@@ -1,13 +1,16 @@
 <?php
 
-    function emptyInputSignup($username, $email, $pwd, $pwdrepeat){
+    function emptyInputSignup($username, $pwd, $email, $pwdrepeat){
         $result;
+        
         if(empty($username) || empty($email) || empty($pwd) || empty($pwdrepeat)){
             $result = true;
+            
         }
         else{
             $result = false;
         }
+
         return result;
     }
 
@@ -66,6 +69,7 @@
     }
 
     function createUser($conn, $username, $pwd, $email){
+        
         $sql = "INSERT INTO Uzytkownik (Login, Mail, Haslo) VALUES (?, ?, ?);";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
