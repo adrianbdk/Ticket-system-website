@@ -1,6 +1,9 @@
 <?php
-    include_once 'includes/myDatabase.inc.php';
-?>     
+session_start();
+?>
+<?php
+include_once 'includes/myDatabase.inc.php';
+?>
 <!Doctype html>
 <html>
 <head>
@@ -21,12 +24,24 @@
       <li class="nav-item active">
         <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="login.php">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="signup.php">Signup</a>
-      </li>
+      <?php
+if (isset($_SESSION["userid"])) {
+    echo "<li class='nav-item'>
+                <a class='nav-link' href='profile.php'>Profile Page</a>
+              </li>";
+    echo "<li class='nav-item'>
+                <a class='nav-link' href='includes/logout.inc.php'>Log Out</a>
+              </li>";
+} else {
+    echo "<li class='nav-item'>
+                <a class='nav-link' href='login.php'>Login</a>
+              </li>";
+    echo "<li class='nav-item'>
+                <a class='nav-link' href='signup.php'>Signup</a>
+              </li>";
+
+}
+?>
     </ul>
   </div>
 </nav>
