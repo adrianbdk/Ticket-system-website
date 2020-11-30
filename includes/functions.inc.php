@@ -110,7 +110,7 @@ function loginUser($conn, $username, $pwd)
         session_start();
         $_SESSION["userid"] = $uidExists["uzytkownik_id"];
         $_SESSION["login"] = $uidExists["Login"];
-        header("location: ../index.php");
+        header("location: ../support-ticket.php");
     }
 
 }

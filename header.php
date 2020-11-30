@@ -13,7 +13,8 @@ include_once 'includes/myDatabase.inc.php';
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-</head>
+
+  </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +29,9 @@ include_once 'includes/myDatabase.inc.php';
 if (isset($_SESSION["userid"])) {
     echo "<li class='nav-item'>
                 <a class='nav-link' href='profile.php'>Profile Page</a>
+              </li>";
+    echo "<li class='nav-item'>
+                <a class='nav-link' href='support-ticket.php'>See all tickets</a>
               </li>";
     echo "<li class='nav-item'>
                 <a class='nav-link' href='includes/logout.inc.php'>Log Out</a>
@@ -45,5 +49,3 @@ if (isset($_SESSION["userid"])) {
     </ul>
   </div>
 </nav>
-
-<div class="wrapper">

@@ -1,19 +1,51 @@
 <?php
-include_once 'header.php';
+session_start();
 ?>
-
-<div class="text-center mt-5">
-
-        <h1 class = "h3 mb-3 font-weight-normal">Log In</h1>
-        <form action="includes/login.inc.php" method="POST" style="max-width:480px;margin:auto;">
-            <input type="text" class="form-control" name='username' placeholder="Username/Email..." >
-            <input type="password" class="form-control" name='pwd' placeholder="Password..." >
-            <div class="mt-3">
-                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Log In</button>
-            </div>
-        </form>
-
 <?php
+include_once 'includes/myDatabase.inc.php';
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap rel="stylesheet">
+    <link rel="stylesheet" href="css/reset.css">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<img class="wave" src="images/bug_fixing.svg">
+	<div class="container">
+		<div class="img">
+
+		</div>
+		<div class="login-content">
+			<form action="includes/login.inc.php" method="POST">
+				<img src="images/profile.svg">
+                <h2 class="title">Welcome</h2>
+                <h1 class="title">Log in</h1>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<h5>Username</h5>
+           		   		<input type="text" class="input" name='username'>
+           		   </div>
+           		</div>
+           		<div class="input-div pass">
+           		   <div class="i">
+           		    	<i class="fas fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5>Password</h5>
+           		    	<input type="password" class="input" name='pwd'>
+            	   </div>
+            	</div>
+            	<a href="signup.php">Don't have account?</a>
+            	<input type="submit" class="btn" value="Login" name="submit">
+            </form>
+            <?php
 if (isset($_GET["error"])) {
     if ($_GET["error"] == "emptyinput") {
         echo "<p>Fill in all fields<p>";
@@ -22,5 +54,8 @@ if (isset($_GET["error"])) {
     }
 }
 ?>
-
-</div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

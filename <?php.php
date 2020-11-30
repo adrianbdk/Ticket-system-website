@@ -1,15 +1,11 @@
 <?php
-session_start();
-?>
-<?php
-include_once 'includes/myDatabase.inc.php';
+include_once 'header.php';
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="css/home.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap rel="stylesheet">
-    <link rel="stylesheet" href="css/reset.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap rel="stylesheet">
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -20,7 +16,7 @@ include_once 'includes/myDatabase.inc.php';
 
 		</div>
 		<div class="login-content">
-			<form action="includes/signup.inc.php" method="POST">
+			<form action="includes/login.inc.php" method="POST">
 				<img src="images/profile.svg">
                 <h2 class="title">Sign in</h2>
            		<div class="input-div one">
@@ -59,10 +55,12 @@ include_once 'includes/myDatabase.inc.php';
            		    	<h5>Repeat password</h5>
            		    	<input type="password" class="input" name='pwdrepeat'>
                    </div>
+
             	</div>
             	<a href="login.php">Already have an account?</a>
-                <input type="submit" class="btn" value="Sign up" name="submit">
-                <?php
+            	<input type="submit" class="btn" value="Sign up" name="submit">
+            </form>
+            <?php
 if (isset($_GET["error"])) {
     if ($_GET["error"] == "emptyinput") {
         echo "<p>Fill in all fields<p>";
@@ -78,11 +76,9 @@ if (isset($_GET["error"])) {
         echo "<p>Username already taken<p>";
     } else if ($_GET["error"] == "none") {
         echo "<p>You have signed up!<p>";
-        header("Refresh: 1; login.php");
     }
 }
 ?>
-            </form>
         </div>
     </div>
     <script type="text/javascript" src="js/main.js"></script>
