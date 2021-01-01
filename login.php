@@ -14,10 +14,9 @@ include_once 'includes/myDatabase.inc.php';
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	<img class="wave" src="images/bug_fixing.svg">
 	<div class="container">
 		<div class="img">
-
+            <img src="images/bug_fixing.svg">
 		</div>
 		<div class="login-content">
 			<form action="includes/login.inc.php" method="POST">

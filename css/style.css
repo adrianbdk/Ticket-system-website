@@ -252,7 +252,7 @@ body {
 }
 
 .support-content-comment {
-  padding: 10px 10px 10px 30px;
+  padding: 10px 10px 10px 10px;
   background: #eee;
   border-top: 1px solid #ccc;
 }

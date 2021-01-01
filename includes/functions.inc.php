@@ -63,10 +63,12 @@ function userExists($conn, $username, $email)
     mysqli_stmt_close($stmt);
 }
 
-function createUser($conn, $username, $pwd, $email)
+$permission = 'User';
+$profilePhoto = 'images/user_profile_pics/default.jpg';
+function createUser($conn, $username, $pwd, $email, $permission, $profilePhoto)
 {
 
-    $sql = "INSERT INTO Uzytkownik (Login, Mail, Haslo) VALUES (?, ?, ?);";
+    $sql = "INSERT INTO Uzytkownik (Login, Haslo, Mail, permissions, profile_photo, display_name) VALUES (?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../signup.php?error=stmtfailed");
@@ -75,7 +77,7 @@ function createUser($conn, $username, $pwd, $email)
 
     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-    mysqli_stmt_bind_param($stmt, "sss", $username, $email, $hashedPwd);
+    mysqli_stmt_bind_param($stmt, "ssssss", $username, $hashedPwd, $email, $permission, $profilePhoto, $username);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../signup.php?error=none");
@@ -114,3 +116,93 @@ function loginUser($conn, $username, $pwd)
     }
 
 }
+
+
+function time_ago($custom_time)
+{
+    $custom_time = strtotime($custom_time);
+
+    $date_time_now_string = date('Y-m-d H:i:s');
+
+    $date_time_now = strtotime($date_time_now_string);
+
+    $time = $date_time_now - $custom_time;
+    if ($time < 60) {
+        return '0 minutes';
+    }
+    $timer_count = array(365 * 24 * 60 * 60 => 'year',
+        30 * 24 * 60 * 60 => 'month',
+        24 * 60 * 60 => 'day',
+        60 * 60 => 'hour',
+        60 => 'minute');
+
+    $timer_code = array('year' => 'years',
+        'month' => 'months',
+        'day' => 'days',
+        'hour' => 'hours',
+        'minute' => 'minutes');
+
+    $final_time = '';
+    foreach ($timer_count as $key => $value) {
+        $dates = $time / $key;
+        if ($dates >= 1) {
+            $round_of = floor($dates);
+
+            $time_remove = $round_of * $key;
+
+            if (($time - $round_of) < 0) {
+                $time -= ($round_of - 1) * $key;
+            } else {
+                $time -= $time_remove;
+            }
+
+            $final_time = $final_time . $round_of . ' ' . ($round_of > 1 ? $timer_code[$value] : $value) . ' ';
+
+        }
+    }
+    return $final_time . ' ago';
+}
+
+function time_ago_profile($custom_time)
+{
+    $custom_time = strtotime($custom_time);
+
+    $date_time_now_string = date('Y-m-d H:i:s');
+
+    $date_time_now = strtotime($date_time_now_string);
+
+    $time = $date_time_now - $custom_time;
+    if ($time < 1) {
+        return '0 seconds';
+    }
+    $timer_count = array(365 * 24 * 60 * 60 => 'year',
+        30 * 24 * 60 * 60 => 'month',
+        24 * 60 * 60 => 'day',);
+
+    $timer_code = array('year' => 'years',
+        'month' => 'months',
+        'day' => 'days');
+
+    $final_time = '';
+    foreach ($timer_count as $key => $value) {
+        $dates = $time / $key;
+        if ($dates >= 1) {
+            $round_of = floor($dates);
+
+            $time_remove = $round_of * $key;
+
+            if (($time - $round_of) < 0) {
+                $time -= ($round_of - 1) * $key;
+            } else {
+                $time -= $time_remove;
+            }
+
+            $final_time = $final_time . $round_of . ' ' . ($round_of > 1 ? $timer_code[$value] : $value) . ' ';
+
+        }
+    }
+    return $final_time . ' ago';
+}
+
+
+

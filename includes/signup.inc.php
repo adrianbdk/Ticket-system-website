@@ -6,6 +6,8 @@ if (isset($_POST["submit"])) {
     $email = $_POST['email'];
     $pwd = $_POST['pwd'];
     $pwdrepeat = $_POST['pwdrepeat'];
+    $permissions = 'User';
+    $profilePhoto = '/images/user_profile_pics/default.jpg';
 
     require_once 'myDatabase.inc.php';
     require_once 'functions.inc.php';
@@ -30,12 +32,12 @@ if (isset($_POST["submit"])) {
         exit();
     }
 
-    if (userExists($conn, $uid, $email) !== false) {
+    if (userExists($conn, $username, $email) !== false) {
         header("location: ../signup.php?error=usernametaken");
         exit();
     }
 
-    createUser($conn, $username, $pwd, $email);
+    createUser($conn, $username, $pwd, $email, $permissions, $profilePhoto);
 
 } else {header("location: ../login.php");
     exit();

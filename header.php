@@ -3,6 +3,7 @@ session_start();
 ?>
 <?php
 include_once 'includes/myDatabase.inc.php';
+include_once 'includes/functions.inc.php';
 ?>
 <!Doctype html>
 <html>
@@ -25,6 +26,7 @@ include_once 'includes/myDatabase.inc.php';
       <li class="nav-item active">
         <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
       </li>
+
       <?php
 if (isset($_SESSION["userid"])) {
     echo "<li class='nav-item'>
@@ -49,3 +51,5 @@ if (isset($_SESSION["userid"])) {
     </ul>
   </div>
 </nav>
+<p></p>
+

@@ -7,7 +7,7 @@ $dbPassword = "";
 $dbName = "ProjektIAB";
 
 $conn = mysqli_connect($dbServername, $dbUsername, $dbPassword, $dbName);
-
+mysqli_query($conn, "SET FOREIGN_KEY_CHECKS=0");
 if(!$conn){
     die("Connection failed: " . mysqli_connect_error());
 }
