@@ -68,7 +68,9 @@ $profilePhoto = 'images/user_profile_pics/default.jpg';
 function createUser($conn, $username, $pwd, $email, $permission, $profilePhoto)
 {
 
-    $sql = "INSERT INTO Uzytkownik (Login, Haslo, Mail, permissions, profile_photo, display_name) VALUES (?, ?, ?, ?, ?, ?);";
+    $date_time_now = date("Y/m/d");
+
+    $sql = "INSERT INTO Uzytkownik (Login, Haslo, Mail, permissions, profile_photo, display_name, join_date) VALUES (?, ?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../signup.php?error=stmtfailed");
@@ -77,10 +79,28 @@ function createUser($conn, $username, $pwd, $email, $permission, $profilePhoto)
 
     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-    mysqli_stmt_bind_param($stmt, "ssssss", $username, $hashedPwd, $email, $permission, $profilePhoto, $username);
+    mysqli_stmt_bind_param($stmt, "sssssss", $username, $hashedPwd, $email, $permission, $profilePhoto, $username, $date_time_now);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../signup.php?error=none");
+    exit();
+}
+
+function updatePermission($conn, $username, $permission)
+{
+    $sql = "UPDATE Uzytkownik
+        SET permissions = ?
+        WHERE Login = ?";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: dashboard.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $permission, $username);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: dashboard.php?error=none");
     exit();
 }
 

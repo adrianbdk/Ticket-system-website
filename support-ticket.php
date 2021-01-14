@@ -9,8 +9,6 @@ if (!isset($_SESSION['userid'])) {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
-    <!--  All snippets are MIT license http://bootdey.com/license -->
     <title>ProjektIAB</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/support-ticket.css">

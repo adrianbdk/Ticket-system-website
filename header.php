@@ -35,10 +35,19 @@ if (isset($_SESSION["userid"])) {
     echo "<li class='nav-item'>
                 <a class='nav-link' href='support-ticket.php'>See all tickets</a>
               </li>";
-    echo "<li class='nav-item'>
+    echo "<li class='nav-item' style='position: absolute; right:20px'>
                 <a class='nav-link' href='includes/logout.inc.php'>Log Out</a>
               </li>";
-} else {
+    $permissionsCheck = $conn->query("SELECT permissions from Uzytkownik 
+                        WHERE uzytkownik_id = {$_SESSION['userid']}");
+    $permission = $permissionsCheck->fetch_assoc();
+    if ($permission['permissions'] == "Admin") {
+        echo "<li class='nav-item'>
+                <a class='nav-link' href='dashboard.php'>Dashboard</a>
+              </li>";
+    }
+
+      } else {
     echo "<li class='nav-item'>
                 <a class='nav-link' href='login.php'>Login</a>
               </li>";
