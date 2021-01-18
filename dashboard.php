@@ -11,7 +11,7 @@ if (!isset($_SESSION['userid'])) {
     <meta charset="utf-8">
     <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
     <!--  All snippets are MIT license http://bootdey.com/license -->
-    <title>User list page - Bootdey.com</title>
+    <title>Projekt IAB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/reset.css" type="text/css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
@@ -32,6 +32,13 @@ if (!isset($_SESSION['userid'])) {
         font-size: 1.25em;
         padding-top: 3px;
         margin-left: 60px;
+    }
+
+    .user-list tbody td .ticket-link {
+        display: block;
+        font-size: 1.25em;
+        padding-top: 3px;
+
     }
 
     .user-list tbody td .user-subhead {
@@ -229,7 +236,13 @@ if (!isset($_SESSION['userid'])) {
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-    <div class="row">
+    <div class="btn-group btn-toggle">
+        <button class="btn btn-primary active" id="btnManageAccounts">Manage accounts</button>
+        <button class="btn btn-default" id="btnManageTickets">Manage tickets</button>
+    </div>
+</div>
+<div class="container">
+    <div class="row" id="manage_accounts">
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <div class="table-responsive">
@@ -263,12 +276,9 @@ if (!isset($_SESSION['userid'])) {
                                     <a href="#"><?php echo $row['Mail']; ?></a>
                                 </td>
                                 <td style="width: 5%;">
-                                    <a href="#" class="table-link danger">
-									<span class="fa-stack">
-										<i class="fa fa-square fa-stack-2x"></i>
-										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-									</span>
-                                    </a>
+                                    <button type="button" class="btn btn-danger"
+                                            onClick="deleteUser(<? echo $row['uzytkownik_id']; ?>)">Delete
+                                    </button>
                                 </td>
                                 <form action="changePermissions.php" method="POST" enctype="multipart/form-data">
                                     <td style="width: 10%;">
@@ -302,11 +312,172 @@ if (!isset($_SESSION['userid'])) {
             </div>
         </div>
     </div>
+
+    <div class="row" id="manage_tickets" id="manage_tickets" style="display:none;">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="table-responsive">
+                    <table class="table user-list">
+                        <thead>
+                        <th><span>Ticket Id</span></th>
+                        <th><span>Created</span></th>
+                        <th><span>Created by</span></th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php $resultUsers = $conn->query("SELECT * FROM Blad");
+
+                        while ($row = $resultUsers->fetch_assoc()) { ?>
+
+                            <?php $resultStatus = $conn->query("SELECT Nazwa from StatusBledu 
+                                    WHERE statusBledu_id = {$row['statusBledu_id']}");
+                            $status = $resultStatus->fetch_assoc(); ?>
+
+                            <tr>
+                                <td>
+                                    <a href="#" class="ticket-link"><?php echo $row['blad_id'];; ?></a>
+                                    <?php if ($status['Nazwa'] == 'NEW') { ?>
+                                        <span class="badge badge-primary m-0"><?php echo $status['Nazwa']; ?></span>
+                                    <?php } else if ($status['Nazwa'] == 'PENDING') { ?>
+                                        <span class="badge badge-warning m-0"><?php echo $status['Nazwa']; ?></span>
+                                    <?php } else if ($status['Nazwa'] == 'RESOLVED') { ?>
+                                        <span class="badge badge-success m-0"><?php echo $status['Nazwa']; ?></span>
+                                    <?php } else if ($status['Nazwa'] == 'CLOSED') { ?>
+                                        <span class="badge badge-secondary m-0"><?php echo $status['Nazwa']; ?></span>
+                                    <?php } else if ($status['Nazwa'] == 'QUEUED') { ?>
+                                        <span class="badge badge-info m-0"><?php echo $status['Nazwa']; ?></span>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['date']; ?>
+                                </td>
+                                <td>
+                                    <? $resultTicketUser = $conn->query("SELECT display_name FROM Uzytkownik WHERE
+                                uzytkownik_id = '{$row['uzytkownik_id']}'");
+                                    $ticketUser = $resultTicketUser->fetch_assoc();
+                                    $user = $ticketUser['display_name']; ?>
+                                    <a href="#"><?php echo $user ?></a>
+                                </td>
+                                <td style="width: 5%;">
+                                    <button type="button" class="btn btn-danger"
+                                             onClick="deleteTicket(<? echo $row['blad_id']; ?>)">Delete
+                                    </button>
+                                </td>
+                                <form action="changeTicketStatus.php" method="POST" enctype="multipart/form-data">
+                                    <td style="width: 10%;">
+
+                                        <select class="btn btn-secondary dropdown-toggle"
+                                                name="status" id="status"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false" required>
+                                            <label>Status</label>
+                                            <option value="" disabled selected>Status</option>
+                                            <option class='dropdown-item' type='button' id='status' value='PENDING'>
+                                                PENDING
+                                            </option>
+                                            <option class='dropdown-item' type='button' id='status' value='RESOLVED'>
+                                                RESOLVED
+                                            </option>
+                                            <option class='dropdown-item' type='button' id='status' value='CLOSED'>
+                                                CLOSED
+                                            </option>
+                                            <option class='dropdown-item' type='button' id='status' value='QUEUED'>
+                                                QUEUED
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 5%;">
+                                        <button name='submit' id='confirm_changes' type='submit'>Confirm changes
+                                        </button>
+                                        <input type="hidden" value="<?php echo $row['blad_id']; ?>"
+                                               name="ticketId">
+                                    </td>
+                                </form>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
+</script>
+
+<script>
+    // $('#btnCreatedByYou').on('click', function () {
+    //     if ($('#created_by_everyone').css('display') != 'none') {
+    //         $('#created_by_you').show().siblings('div').hide();
+    //     } else if ($('#created_by_you').css('display') != 'none') {
+    //         $('#created_by_you').show().siblings('div').hide();
+    //     }
+    // });
+    $('#btnManageAccounts').on('click', function () {
+        if ($('#mange_tickets').css('display') != 'none') {
+            $('#manage_accounts').show().siblings('div').hide();
+        } else if ($('#manage_accounts').css('display') != 'none') {
+            $('#manage_accounts').show().siblings('div').hide();
+        }
+    });
+    $('#btnManageTickets').on('click', function () {
+        if ($('#manage_accounts').css('display') != 'none') {
+            $('#manage_tickets').show().siblings('div').hide();
+        } else if ($('#manage_tickets').css('display') != 'none') {
+            $('#manage_tickets').show().siblings('div').hide();
+        }
+    });
+</script>
+
+<script>
+    $('.btn-toggle').click(function () {
+        $(this).find('.btn').toggleClass('active');
+
+        if ($(this).find('.btn-primary').size() > 0) {
+            $(this).find('.btn').toggleClass('btn-primary');
+        }
+        $(this).find('.btn').toggleClass('btn-default');
+
+    });
+</script>
+
+<script type="text/javascript">
+    function deleteUser(id) {
+        if (confirm('Are You sure?')) {
+            $.ajax({
+                type: 'post',
+                url: 'deleteUser.php',
+                async: false,
+                data: {delete_id: id},
+                success: function (data) {
+                    alert("User succesfully deleted");
+                }
+            })
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function deleteTicket(id) {
+        if (confirm('Are You sure?')) {
+            $.ajax({
+                type: 'post',
+                url: 'deleteTicket.php',
+                async: false,
+                data: {delete_id: id},
+                success: function (data) {
+                    alert("Ticket succesfully deleted");
+                }
+            })
+        }
+    }
 </script>
 </body>
 </html>

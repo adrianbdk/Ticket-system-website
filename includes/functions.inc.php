@@ -104,6 +104,24 @@ function updatePermission($conn, $username, $permission)
     exit();
 }
 
+function updateTicketStatus($conn, $ticketId, $status)
+{
+    $sql = "UPDATE Blad
+        SET statusBledu_id = ?
+        WHERE blad_id = ?";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: dashboard.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ii",  $status, $ticketId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: dashboard.php?error=none");
+    exit();
+}
+
 function emptyInputLogin($username, $pwd)
 {
     if (empty($username) || empty($pwd)) {

@@ -158,10 +158,16 @@ if(!isset($_SESSION['userid'])){
                             <?php $resultStatus = $conn->query("SELECT Nazwa from StatusBledu 
                                     WHERE statusBledu_id = {$row['statusBledu_id']}");
                                 $status = $resultStatus->fetch_assoc();?>
-                            <?php if ($status['Nazwa'] == 'New'){?>
+                            <?php if ($status['Nazwa'] == 'NEW'){?>
                             <td><span class="badge badge-primary m-0"><?php echo $status['Nazwa'];?></span></td>
-                            <?php }else if ($status['Nazwa'] == 'Pending'){ ?>
+                            <?php }else if ($status['Nazwa'] == 'PENDING'){ ?>
                             <td><span class="badge badge-warning m-0"><?php echo $status['Nazwa'];?></span></td>
+                            <?php } else if ($status['Nazwa'] == 'RESOLVED'){ ?>
+                            <td><span class="badge badge-success m-0"><?php echo $status['Nazwa'];?></span></td>
+                            <?php } else if ($status['Nazwa'] == 'CLOSED'){ ?>
+                                <td><span class="badge badge-secondary m-0"><?php echo $status['Nazwa'];?></span></td>
+                            <?php } else if ($status['Nazwa'] == 'QUEUED'){ ?>
+                                <td><span class="badge badge-info m-0"><?php echo $status['Nazwa'];?></span></td>
                             <?php } ?>
                             <td><span>Marcin Najman</span></td>
                         </tr>
